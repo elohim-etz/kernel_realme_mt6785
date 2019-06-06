@@ -3870,6 +3870,8 @@ static bool sock_addr_is_valid_access(int off, int size,
 		switch (prog->expected_attach_type) {
 		case BPF_CGROUP_INET4_BIND:
 		case BPF_CGROUP_INET4_CONNECT:
+		case BPF_CGROUP_UDP4_SENDMSG:
+		case BPF_CGROUP_UDP4_RECVMSG:
 			break;
 		default:
 			return false;
@@ -3879,6 +3881,25 @@ static bool sock_addr_is_valid_access(int off, int size,
 		switch (prog->expected_attach_type) {
 		case BPF_CGROUP_INET6_BIND:
 		case BPF_CGROUP_INET6_CONNECT:
+		case BPF_CGROUP_UDP6_SENDMSG:
+		case BPF_CGROUP_UDP6_RECVMSG:
+			break;
+		default:
+			return false;
+		}
+		break;
+	case bpf_ctx_range(struct bpf_sock_addr, msg_src_ip4):
+		switch (prog->expected_attach_type) {
+		case BPF_CGROUP_UDP4_SENDMSG:
+			break;
+		default:
+			return false;
+		}
+		break;
+	case bpf_ctx_range_till(struct bpf_sock_addr, msg_src_ip6[0],
+				msg_src_ip6[3]):
+		switch (prog->expected_attach_type) {
+		case BPF_CGROUP_UDP6_SENDMSG:
 			break;
 		default:
 			return false;
