@@ -811,8 +811,7 @@ static void ipi_cpu_stop(unsigned int cpu)
 
 	local_irq_disable();
 
-	while (1)
-		cpu_relax();
+	cpu_park_loop();
 }
 
 #ifdef CONFIG_KEXEC_CORE
