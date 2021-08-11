@@ -4711,10 +4711,7 @@ static noinline void __schedule_bug(struct task_struct *prev)
 		dump_preempt_disable_ips(current);
 		pr_cont("\n");
 	}
-	check_panic_on_warn("scheduling while atomic");
-
-	dump_stack();
-	add_taint(TAINT_WARN, LOCKDEP_STILL_OK);
+	panic("scheduling while atomic\n");
 	BUG_ON(1);
 }
 
