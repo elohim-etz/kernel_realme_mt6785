@@ -1073,7 +1073,6 @@ update_stats_enqueue_sleeper(struct cfs_rq *cfs_rq, struct sched_entity *se)
 #endif /*OPLUS_FEATURE_IOMONITOR*/
 			}
 			trace_sched_stat_blocked(tsk, delta);
-			trace_sched_blocked_reason(tsk);
 #ifdef OPLUS_FEATURE_HEALTHINFO
 // Jiheng,Xie@TECH.BSP.Performance, 2019/05/18,add for get dstate statictics
 #ifdef CONFIG_OPPO_HEALTHINFO
