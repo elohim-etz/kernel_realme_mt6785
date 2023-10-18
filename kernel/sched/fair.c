@@ -12352,6 +12352,9 @@ void check_for_migration(struct rq *rq, struct task_struct *p)
 	int i, heavy_task = 0;
 	struct task_rotate_reset_uclamp_work *wr = NULL;
 
+	if (IS_ENABLED(CONFIG_SCHED_CASS))
+		return;
+
 	for_each_possible_cpu(i) {
 		struct rq *rq = cpu_rq(i);
 		struct task_struct *curr_task = rq->curr;
