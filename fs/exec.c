@@ -1706,18 +1706,12 @@ static int exec_binprm(struct linux_binprm *bprm)
 	return ret;
 }
 
-#ifdef CONFIG_OPLUS_SECURE_GUARD
-#if defined(CONFIG_OPLUS_EXECVE_BLOCK) || defined(CONFIG_OPLUS_EXECVE_REPORT)
-extern int oplus_exec_block(struct file *file);
-#endif /* CONFIG_OPLUS_EXECVE_BLOCK or CONFIG_OPLUS_EXECVE_REPORT */
-#endif /* CONFIG_OPLUS_SECURE_GUARD */
-
-#ifdef CONFIG_KSU
+#if defined(CONFIG_KSU) && !defined(CONFIG_KPROBES)
 extern bool ksu_execveat_hook __read_mostly;
 extern int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv,
-                       void *envp, int *flags);
+			void *envp, int *flags);
 extern int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr,
-                                void *argv, void *envp, int *flags);
+				 void *argv, void *envp, int *flags);
 #endif
 
 /*
@@ -1734,12 +1728,12 @@ static int do_execveat_common(int fd, struct filename *filename,
 	struct files_struct *displaced;
 	int retval;
 
-	#ifdef CONFIG_KSU
+#if defined(CONFIG_KSU) && !defined(CONFIG_KPROBES)
 	if (unlikely(ksu_execveat_hook))
-               ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
-       	else
-               ksu_handle_execveat_sucompat(&fd, &filename, &argv, &envp, &flags);
-	#endif
+		ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
+	else
+		ksu_handle_execveat_sucompat(&fd, &filename, &argv, &envp, &flags);
+#endif
 
 	if (IS_ERR(filename))
 		return PTR_ERR(filename);
@@ -1781,15 +1775,6 @@ static int do_execveat_common(int fd, struct filename *filename,
 	if (IS_ERR(file))
 		goto out_unmark;
 
-#ifdef CONFIG_OPLUS_SECURE_GUARD
-#if defined(CONFIG_OPLUS_EXECVE_BLOCK) || defined(CONFIG_OPLUS_EXECVE_REPORT)
-    retval = oplus_exec_block(file);
-	if (retval){
-		fput(file);
-		goto out_unmark;
-	}
-#endif /* CONFIG_OPLUS_EXECVE_BLOCK or CONFIG_OPLUS_EXECVE_REPORT */
-#endif /* CONFIG_OPLUS_SECURE_GUARD */
 	sched_exec();
 
 	bprm->file = file;
