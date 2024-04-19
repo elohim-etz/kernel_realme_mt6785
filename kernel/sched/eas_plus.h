@@ -166,3 +166,16 @@ static int check_freq_turning(void);
 struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,
 				struct task_struct *p, int dest_cpu);
 
+/*
+ * schedtune/uclamp compat wrappers
+ */
+static inline int mtk_prefer_idle(struct task_struct *p)
+{
+#if defined(CONFIG_SCHED_TUNE)
+	return schedtune_prefer_idle(p) > 0;
+#elif defined(CONFIG_UCLAMP_TASK_GROUP)
+	return uclamp_latency_sensitive(p);
+#else
+	return 0;
+#endif
+}
