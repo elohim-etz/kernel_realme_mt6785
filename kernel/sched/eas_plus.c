@@ -142,7 +142,7 @@ ___select_idle_sibling(struct task_struct *p, int prev_cpu, int new_cpu)
 {
 	if (sched_feat(SCHED_MTK_EAS)) {
 #ifdef CONFIG_SCHED_TUNE
-		bool prefer_idle = schedtune_prefer_idle(p) > 0;
+		bool prefer_idle = mtk_prefer_idle(p);
 #else
 		bool prefer_idle = true;
 #endif
@@ -417,7 +417,7 @@ bool idle_lb_enhance(struct task_struct *p, int cpu)
 {
 	int target_capacity = capacity_orig_of(cpu);
 
-	if (schedtune_prefer_idle(p))
+	if (mtk_prefer_idle(p))
 		return 1;
 
 	if (uclamp_task_effective_util(p, UCLAMP_MIN) > target_capacity)
@@ -468,7 +468,7 @@ static struct sched_entity
 			if (check_min_cap && util_min >= src_capacity)
 				return se;
 
-			if (schedtune_prefer_idle(task_of(se)) &&
+			if (mtk_prefer_idle(task_of(se)) &&
 					cpu_rq(cpu)->nr_running > 1) {
 				if (!check_min_cap)
 					return se;
@@ -1152,7 +1152,7 @@ static int find_energy_efficient_cpu_enhanced(struct task_struct *p,
 	if (!boosted_task_util(p))
 		return -1;
 
-	prefer_idle = schedtune_prefer_idle(p);
+	prefer_idle = mtk_prefer_idle(p);
 	boosted = (schedtune_task_boost(p) > 0) || (uclamp_task_effective_util(p, UCLAMP_MIN) > 0);
 	target_cap = boosted ? 0 : ULONG_MAX;
 
