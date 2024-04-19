@@ -8409,7 +8409,7 @@ static int find_energy_efficient_cpu(struct sched_domain *sd,
 		 * all if(prefer_idle) blocks.
 		 */
 		prefer_idle = sched_feat(EAS_PREFER_IDLE) ?
-				mtk_prefer_idle(p) : 0;
+				(mtk_prefer_idle(p)) : 0;
 
 		eenv->max_cpu_count = EAS_CPU_BKP + 1;
 
