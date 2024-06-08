@@ -44,7 +44,8 @@ jobs:
           git config --global user.name "gofaraway71" && git config --global user.email aalbatron@google.com
           git clone --depth=1 https://github.com/albatron34000/rui2_kernel_realme_mt6785 -b android-14 mt6785
           cd mt6785
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+          rm -rf kernelSU
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bashhttps://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh -
           git clone --depth=1 https://github.com/psionicprjkt/aarch64-linux-android-4.9 arm64 && git clone --depth=1 https://github.com/psionicprjkt/arm-linux-androideabi-4.9 arm32
           wget --quiet https://android.googlesource.com/platform//prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r522817.tar.gz -O "clang.tar.gz"
           mkdir clang && tar -xf clang.tar.gz -C clang && rm -f clang.tar.gz
