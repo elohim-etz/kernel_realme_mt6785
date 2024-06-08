@@ -1,4 +1,3 @@
-
 name: build-kernelsu-ok
 
 on:
@@ -10,7 +9,7 @@ on:
         default: 'RMX2151'
       MANIFEST_BRANCH:
         required: true
-        default: 'android-14'
+        default: '14-ksu'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,7 +43,8 @@ jobs:
           git config --global user.name "gofaraway71" && git config --global user.email aalbatron@google.com
           git clone --depth=1 https://github.com/albatron34000/rui2_kernel_realme_mt6785 -b android-14 mt6785
           cd mt6785
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bashhttps://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh -
+          rm -rf KernelSU
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
           git clone --depth=1 https://github.com/psionicprjkt/aarch64-linux-android-4.9 arm64 && git clone --depth=1 https://github.com/psionicprjkt/arm-linux-androideabi-4.9 arm32
           wget --quiet https://android.googlesource.com/platform//prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r522817.tar.gz -O "clang.tar.gz"
           mkdir clang && tar -xf clang.tar.gz -C clang && rm -f clang.tar.gz
@@ -57,7 +57,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: mt6785/AnyKernel/gofaraway*
-          name: Gofaraway_salaa_KernelSU
+          name: psionic_salaa_KernelSU
           tag_name: ${{ github.run_id }}
           body: |
             Manifest: ${{ github.event.inputs.MANIFEST_BRANCH }}
