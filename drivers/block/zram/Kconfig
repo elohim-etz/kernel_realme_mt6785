@@ -41,6 +41,10 @@ config ZRAM_MEMORY_TRACKING
 
 	  See Documentation/blockdev/zram.txt for more information.
 
+config ZRAM_DEFAULT_COMP_ALGORITHM
+	string "Default ZRAM algorithm"
+	default "lzo"
+
 #ifdef OPLUS_FEATURE_ZRAM_OPT
 #/*Huacai.Zhou@Tech.Kernel.MM, 2020-03-21, add zram opt support*/
 config OPLUS_ZRAM_OPT
