@@ -30,12 +30,11 @@ compile_kernel() {
 
 setup_kernel_release() {
     # setup_kernel_release
-    v=$(cat version)
     d=$(date "+%d%m%Y")
-    z="psionic-kernel-RM6785-$d-$v-ksu.zip"
-    wget --quiet https://psionicprjkt.my.id/assets/files/AK3-RM6785.zip && unzip AK3-RM6785
-    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel && cd AnyKernel
-    zip -r9 "$z" *
+    git clone --depth=1 https://github.com/elohim-etz/AK3.git -b takoyaki AnyKernel
+    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+    cd AnyKernel
+    zip -r9 TakoYaki-$d-RM6785-R1.zip *
 }
 
 compile_kernel
