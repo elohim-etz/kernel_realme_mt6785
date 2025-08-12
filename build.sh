@@ -50,7 +50,7 @@ function zip_kernel()
     git clone --depth=1 https://github.com/elohim-etz/AK3.git -b takoyaki AnyKernel
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
     cd AnyKernel
-    zip -r9 MahiruShiina-[b3]-4.14.356-$d-RM6785-ksu.zip *
+    zip -r9 MahiruShiina-b2-4.14.356-$d-RM6785-ksu.zip *
 }
 
 setup_env
