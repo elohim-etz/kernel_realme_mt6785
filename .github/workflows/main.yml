@@ -10,7 +10,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive # In case your kernel has submodules
+          submodules: recursive
 
       - name: Set up build environment
         run: |
@@ -26,9 +26,9 @@ jobs:
       - name: Find built kernel zip
         id: find_zip
         run: |
-          kernel_zip=$(find AnyKernel -maxdepth 1 -type f -name 'MahiruShiina*.zip' | head -n 1)
+          kernel_zip=$(find AnyKernel -maxdepth 1 -type f -name 'MikuChan*.zip' | head -n 1)
           if [ -z "$kernel_zip" ]; then
-            echo "Error: No kernel zip found starting with MahiruShiina!"
+            echo "Error: No kernel zip found starting with MikuChan!"
             exit 1
           fi
           echo "Kernel zip found: $kernel_zip"
