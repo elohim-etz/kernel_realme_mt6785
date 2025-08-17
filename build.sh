@@ -22,7 +22,7 @@ if [ ! -d "clang" ]; then
 fi
 git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 los-4.9-64
 git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 los-4.9-32
-curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/12107+155/kernel/setup.sh" | bash -s 12107+155
+curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main
 
 [ -d "out" ] && rm -rf out || mkdir -p out
 
@@ -52,7 +52,7 @@ function zip_kernel()
     git clone --depth=1 https://github.com/elohim-etz/AK3.git -b mikuchan AnyKernel
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
     cd AnyKernel
-    zip -r9 MikuChan-1.0-4.14.356-$d-RM6785-ksu.zip *
+    zip -r9 MikuChan-SukiSU-4.14.356-$d-RM6785-ksu.zip *
 }
 
 setup_env
