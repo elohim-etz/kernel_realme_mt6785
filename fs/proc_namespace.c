@@ -22,7 +22,7 @@
 #include "internal.h"
 
 #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-extern bool ksu_uid_should_umount(uid_t uid);
+extern bool susfs_is_current_ksu_domain(void);
 #endif
 
 static unsigned mounts_poll(struct file *file, poll_table *wait)
@@ -110,8 +110,7 @@ static int show_vfsmnt(struct seq_file *m, struct vfsmount *mnt)
 	int err;
 
 #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-	uid_t uid = __kuid_val(current->cred->uid); 
-	if (unlikely((r->mnt_id >= DEFAULT_SUS_MNT_ID) && (uid % 100000) > 10000) && ksu_uid_should_umount(uid) )
+	if (unlikely((r->mnt_id >= DEFAULT_SUS_MNT_ID) && !susfs_is_current_ksu_domain()))
 		return 0;
 #endif
 
@@ -152,8 +151,7 @@ static int show_mountinfo(struct seq_file *m, struct vfsmount *mnt)
 	int err;
 
 #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-	uid_t uid = __kuid_val(current->cred->uid); 
-	if (unlikely((r->mnt_id >= DEFAULT_SUS_MNT_ID) && (uid % 100000) > 10000) && ksu_uid_should_umount(uid) )
+	if (unlikely((r->mnt_id >= DEFAULT_SUS_MNT_ID) && !susfs_is_current_ksu_domain()))
 		return 0;
 #endif
 
@@ -222,8 +220,7 @@ static int show_vfsstat(struct seq_file *m, struct vfsmount *mnt)
 	int err;
 
 #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-	uid_t uid = __kuid_val(current->cred->uid); 
-	if (unlikely((r->mnt_id >= DEFAULT_SUS_MNT_ID) && (uid % 100000) > 10000) && ksu_uid_should_umount(uid) )
+	if (unlikely((r->mnt_id >= DEFAULT_SUS_MNT_ID) && !susfs_is_current_ksu_domain()))
 		return 0;
 #endif
 
