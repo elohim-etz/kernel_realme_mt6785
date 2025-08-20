@@ -42,7 +42,7 @@ function download_toolchains() {
 
 function setup_kernelsu() {
     log "Setting up KernelSU..."
-    curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/12107+155/kernel/setup.sh" | bash -s 12107+155 || error_exit "KernelSU setup failed."
+    curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s susfs-main || error_exit "KernelSU setup failed."
 }
 
 function compile_kernel() {
