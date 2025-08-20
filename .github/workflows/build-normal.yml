@@ -1,0 +1,56 @@
+name: Compile Kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up build environment
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential bc bison flex \
+            libssl-dev gcc clang lld libncurses5-dev git zip curl
+
+      - name: Run kernel build script
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Find built kernel zip
+        id: find_zip
+        run: |
+          kernel_zip=$(find AnyKernel -maxdepth 1 -type f -name 'Miku*.zip' | head -n 1)
+          if [ -z "$kernel_zip" ]; then
+            echo "Error: No kernel zip found starting with Miku!"
+            exit 1
+          fi
+          echo "Kernel zip found: $kernel_zip"
+          echo "KERNEL_ZIP=$kernel_zip" >> $GITHUB_ENV
+
+      - name: Upload kernel to GoFile & get link
+        id: upload_kernel
+        run: |
+          upload_output=$(curl -sSL https://raw.githubusercontent.com/elohim-etz/GoFile-Upload/main/upload.sh | bash -s -- "$KERNEL_ZIP")
+
+          file_link=$(echo "$upload_output" | grep -o 'https://gofile.io/d/[a-zA-Z0-9]*' | head -n 1)
+          if [ -z "$file_link" ]; then
+            echo "Error: Failed to extract GoFile link!"
+            echo "$upload_output"
+            exit 1
+          fi
+
+          echo "GOFILE_LINK=$file_link" >> $GITHUB_ENV
+          echo "GOFILE_LINK: $file_link"
+
+      - name: Show final download link
+        run: |
+          echo "=============================="
+          echo "GOFILE_LINK: $GOFILE_LINK"
+          echo "=============================="
