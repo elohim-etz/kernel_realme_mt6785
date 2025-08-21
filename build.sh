@@ -42,7 +42,7 @@ function download_toolchains() {
 
 function setup_kernelsu() {
     log "Setting up KernelSU..."
-    curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s susfs-main || error_exit "KernelSU setup failed."
+    curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main || error_exit "KernelSU setup failed."
 }
 
 function compile_kernel() {
@@ -93,12 +93,11 @@ function zip_kernel() {
     git clone --depth=1 https://github.com/elohim-etz/AK3.git -b mikuchan AnyKernel || error_exit "Failed to clone AnyKernel3"
     cp "$KERNEL_IMAGE" AnyKernel || error_exit "Failed to copy kernel image"
     cd AnyKernel || exit
-    zip -r9 Miku-4.14.356-${DATE}-RM6785-ksu.zip * || error_exit "Zipping failed"
-    log "Kernel zip created: AnyKernel/Miku-4.14.356-${DATE}-RM6785-ksu.zip"
+    zip -r9 Miku-4.14.356-SukiSU-${DATE}-RM6785-ksu.zip * || error_exit "Zipping failed"
+    log "Kernel zip created: AnyKernel/Miku-4.14.356-SukiSU-${DATE}-RM6785-ksu.zip"
 }
 
 function main() {
-    log "On upstream-xx branch"
     setup_env
     download_toolchains
     setup_kernelsu
